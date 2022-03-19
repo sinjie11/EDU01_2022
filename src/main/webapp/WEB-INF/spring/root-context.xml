@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<!-- Oracle DB -->
+	<bean id="dataSourceSpied" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	  <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+	  <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
+	  <property name="username" value="edu2022" />
+	  <property name="password" value="edu2022" />
+	</bean>
+
+	<!-- log 정렬 -->
+	<bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref="dataSourceSpied" />
+		<property name="logFormatter">
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+				<property name="loggingType" value="MULTI_LINE" />
+				<property name="sqlPrefix" value="SQL : " />
+			</bean>
+		</property>
+	</bean>
+
+	<!-- mybatis-spring 라이브러리 --> 
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"> 
+		<!-- setter 개념 -->  
+		<property name="dataSource" ref="dataSource" /> 
+		<!-- MyBatis 설정 파일의 위치를 지정 -->
+	  	<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<!-- sql 코드가 들어있는 xml 문서 --> 
+		<property name="mapperLocations" value="classpath:mapper/**/*Mapper.xml" /> 
+		</bean> <!-- ★ 3.실제 클래스에 주입 --> 
+		<!-- xml문서에서 sql구문을 읽어와서 실행을 담당하는 기능 제공 --> 
+		<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate"> 
+		<!-- constructor-arg : 생성자 메소드 --> 
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/> 
+	</bean>
+		
+	<!-- mapper 기본 패키지 경로 설정 --> 
+	<mybatis-spring:scan base-package="com.mydev.edu.**" />
+	
+</beans>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- 
+		log4j는 크게 3가지의 큰 틀로 구성.
+		​ (1) Logger : logging 메시지를 Appender에 전달.
+		 (2) Appender : 전달된 로깅 메시지를 파일, 콘솔,DB에 저장 할 지 지정하는 역할을 한다.
+		 (3) Layout : Appender가 어디에 출력 할 것인지 결정했다면 어떠한 형식으로 출력을 할 지 출력 layout을 결정
+
+		log4j level
+	      logging 레벨은 TRACE < DEBUG < INFO < WARN < ERROR and FATAL
+	      
+	      1) FATAL : 가장 크리티컬한 에러가 났을 때 사용.
+	      2) ERROR : 일반 에러가 났을 경우 사용.
+	      3) WARN : 에러는 아니지만 주의할 필요있을 때 사용.
+	      4) INFO : 일반 정보를 나타날 때 사용.
+	      5) DEBUG : 일반 정보를 상세히 나타낼 때 사용. (주로 많이 사용)
+	      6) TRACE : 가장 레벨이 낮은 단계.
+	      
+	      debug 레벨로 했다면 INFO~FATAL까지 모두 logging이 되어집니다.
+	             실제 운영모드때는 보통 INFO레벨로 하면된다.
+	 -->
+	
+	<!-- Appenders -->
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %5p [%c] %m%n" />
+		</layout>
+	</appender>
+	<appender name="console-infolog" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %5p %m%n" />
+		</layout>
+	</appender>
+	
+	<!-- Application Loggers -->
+	<!-- <logger name="com.mydev.edu">
+		<level value="DEBUG" />
+		<appender-ref ref="console" />
+	</logger> -->
+	
+	<!-- 3rdparty Loggers -->
+	<logger name="org.springframework.core">
+		<level value="INFO" />
+		<appender-ref ref="console" />
+	</logger>
+	
+	<logger name="org.springframework.beans">
+		<level value="INFO" />
+		<appender-ref ref="console" />
+	</logger>
+	
+	<logger name="org.springframework.context">
+		<level value="INFO" />
+		<appender-ref ref="console" />
+	</logger>
+
+	<logger name="org.springframework.web">
+		<level value="INFO" />
+		<appender-ref ref="console" />
+	</logger>
+	
+	<logger name="jdbc.sqlonly" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="console" />
+	</logger>
+	<logger name="jdbc.resultsettable" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="console" />
+	</logger>
+
+	<!-- Root Logger -->
+	<root>
+		<priority value="OFF" />
+		<appender-ref ref="console" />
+	</root>
+	
+</log4j:configuration>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mydev.edu.board.mapper.BoardMapper">
+
+	<sql id="pageHeader">
+       	SELECT
+			GG.*
+		FROM
+			(
+    </sql>
+    
+    <sql id="pageTail">
+    	) GG
+       	WHERE 
+       		GG.RNUM BETWEEN #{firstRecordIndex} AND #{lastRecordIndex}
+    </sql>
+
+	<!-- 게시판 목록 -->
+	<select id="selectBoardList" parameterType="boardVO" resultType="boardVO">
+		/* selectBoardList */
+			
+		<include refid="pageHeader" />	
+			
+		SELECT
+			A.BOARD_NO
+			, A.TITLE
+			, A.CONTENT
+			, A.BOARD_PW
+			, CASE
+				WHEN A.BOARD_OPEN_YN IS NULL
+				THEN 'Y'
+				ELSE A.BOARD_OPEN_YN
+			END AS BOARD_OPEN_YN
+			, A.HITS
+			, A.USE_YN
+			, A.REG_ID
+			, B.NAME AS REG_NAME
+			, TO_CHAR(A.REG_DATE, 'YYYY-MM-DD HH24:MI:SS') AS REG_DATE
+			, A.UPDT_ID
+			, TO_CHAR(A.UPDT_DATE, 'YYYY-MM-DD HH24:MI:SS') AS UPDT_DATE
+			, ROW_NUMBER() OVER(ORDER BY A.BOARD_NO DESC) AS RNUM
+		FROM
+			BOARD A
+			LEFT OUTER JOIN MEMBER B ON B.MBER_ID = A.REG_ID
+		WHERE
+			A.USE_YN = 'Y'
+		ORDER BY A.BOARD_NO DESC
+		
+		<include refid="pageTail" />	
+	</select>
+	
+	<!-- 게시판 목록 갯수 -->
+	<select id="selectBoardListCnt" parameterType="boardVO" resultType="int">
+		/* selectBoardListCnt */
+		
+		SELECT
+			COUNT(*) AS totCnt
+		FROM
+			BOARD A
+			LEFT OUTER JOIN MEMBER B ON B.MBER_ID = A.REG_ID
+		WHERE
+			A.USE_YN = 'Y'
+	</select>
+	
+	<!-- 게시판 상세  -->
+	<select id="selectBoardDetail" parameterType="boardVO" resultType="boardVO">
+		/* selectBoardDetail */
+		
+		SELECT
+			A.BOARD_NO
+			, A.TITLE
+			, A.CONTENT
+			, A.BOARD_PW
+			, CASE
+				WHEN A.BOARD_OPEN_YN IS NULL
+				THEN 'Y'
+				ELSE A.BOARD_OPEN_YN
+			END AS BOARD_OPEN_YN
+			, A.HITS
+			, A.USE_YN
+			, A.REG_ID
+			, B.NAME AS REG_NAME
+			, TO_CHAR(A.REG_DATE, 'YYYY-MM-DD HH24:MI:SS') AS REG_DATE
+			, A.UPDT_ID
+			, TO_CHAR(A.UPDT_DATE, 'YYYY-MM-DD HH24:MI:SS') AS UPDT_DATE
+			, ROW_NUMBER() OVER(ORDER BY A.BOARD_NO DESC) AS RNUM
+		FROM
+			BOARD A
+			LEFT OUTER JOIN MEMBER B ON B.MBER_ID = A.REG_ID
+		WHERE
+			A.USE_YN = 'Y'
+			AND A.BOARD_NO = #{boardNo}
+	</select>
+	
+	<!-- 게시판 등록 -->
+	<insert id="boardInsert" parameterType="boardVO">
+		/* boardInsert */
+		
+		INSERT INTO
+			BOARD
+				(
+					BOARD_NO
+					, TITLE
+					, CONTENT
+					, BOARD_PW
+					, BOARD_OPEN_YN
+					, HITS
+					, USE_YN
+					, REG_ID
+					, REG_DATE
+				)
+			VALUES
+				(
+					BOARD_SEQ.NEXTVAL
+					, #{title}
+					, #{content}
+					, #{boardPw}
+					, #{boardOpenYn}
+					, 0
+					, 'Y'
+					, #{regId}
+					, SYSDATE
+				)
+	</insert>
+	
+	<!-- 게시판 수정 -->
+	<update id="boardUpdate" parameterType="boardVO">
+		/* boardUpdate */
+		
+		UPDATE
+			BOARD
+		SET
+			TITLE = #{title}
+			, CONTENT = #{content}
+			, BOARD_PW = #{boardPw}
+			, BOARD_OPEN_YN = #{boardOpenYn}
+			, UPDT_ID = #{updtId}
+			, UPDT_DATE = SYSDATE
+		WHERE		
+			BOARD_NO = #{boardNo}
+	</update>
+	
+	<!-- 게시판 삭제 -->
+	<delete id="boardDelete" parameterType="boardVO">
+		/* boardDelete */
+		
+		<!-- DELETE
+		FROM
+			BOARD
+		WHERE
+			BOARD_NO = #{boardNo} -->
+			
+		UPDATE
+			BOARD
+		SET
+			USE_YN = 'N'
+			, UPDT_ID = #{updtId}
+			, UPDT_DATE = SYSDATE
+		WHERE		
+			BOARD_NO = #{boardNo}
+	</delete>
+	
+	<!-- 게시판 조회수 증가 -->
+	<update id="boardHitsCntUpdate" parameterType="boardVO">
+		/* boardHitsCntUpdate */
+		
+		UPDATE
+			BOARD
+		SET
+			HITS = (SELECT NVL(MAX(HITS), 0) + 1 FROM BOARD WHERE BOARD_NO = #{boardNo})
+			, UPDT_ID = #{updtId}
+			, UPDT_DATE = SYSDATE
+		WHERE		
+			BOARD_NO = #{boardNo}
+	</update>
+	
+</mapper>

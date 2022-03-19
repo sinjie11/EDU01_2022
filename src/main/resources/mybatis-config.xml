@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!-- MyBatis 프레임워크에서 사용될 여러가지 환경 설정 정보들을 설정 -->
+<configuration>
+
+    <settings>
+    	<!-- DB 컬럼명에  _(Underscore)가 포함되어 있을 때 이를 자동으로 카멜 표기법의 VO와 매핑해주기 위해 설정을 추가 -->
+    	<setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+    
+    <!-- MyBatis 프레임워크에서 select의 결과를 저장할 Model 클래스(VO)를 찾아 별칭을 주어  간략하게 사용 -->
+    <typeAliases>    	
+    	<!-- VO -->
+    	<typeAlias alias="mberVO" type="com.mydev.edu.mber.vo.MberVO"/>
+    	<typeAlias alias="boardVO" type="com.mydev.edu.board.vo.BoardVO"/>
+    </typeAliases>
+    
+</configuration>
