@@ -52,7 +52,7 @@ public class BoardController {
 			boardVO.setPageSize(pageSize);
 		}
 
-		// 페이징처리
+		// 페이징처리 
 		int totCnt = boardService.selectBoardListCnt(boardVO); // 게시판 목록 갯수
 		PaginationInfo pagination = new PaginationInfo(boardVO.getCurrentPage(), boardVO.getCntPerPage(), boardVO.getPageSize());
 		pagination.setTotalRecordCount(totCnt);
