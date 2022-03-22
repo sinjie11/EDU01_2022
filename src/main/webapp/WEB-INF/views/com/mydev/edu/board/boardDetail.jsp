@@ -59,7 +59,7 @@
 		
 		var form = $('#detailForm');
 		
-		if (confirm('삭제하시겠습니까?') == true){ // 확인
+		if (confirm('삭제하시겠습니까?')){ // 확인
 
 			$.ajax({
 				url : '/board/boardDelete.do'

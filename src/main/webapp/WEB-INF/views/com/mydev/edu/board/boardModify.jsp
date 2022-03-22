@@ -71,7 +71,7 @@
 		
 		var form = $('#modifyForm');
 		
-		if (confirm('수정하시겠습니까?') == true){ // 확인
+		if (confirm('수정하시겠습니까?')){ // 확인
 
 			$.ajax({
 				url : '/board/boardUpdate.do'
@@ -142,12 +142,6 @@
   						<label for="boardOpenYn_Y">예</label>
 						<input type="radio" id="boardOpenYn_N" name="boardOpenYn" value="N" onclick="fnBbsOpenYnChk(this.value);" <c:if test="${boardVO.boardOpenYn eq 'N'}">checked="checked"</c:if> />
   						<label for="boardOpenYn_N">아니오</label>
-					</td>
-				</tr>
-				<tr>
-					<th>등록일시</th>
-					<td>
-						<span>${boardVO.regDate}</span>
 					</td>
 				</tr>
 			</tbody>

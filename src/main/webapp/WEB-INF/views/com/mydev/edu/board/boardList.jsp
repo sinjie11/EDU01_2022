@@ -346,6 +346,7 @@ a:visited {
 </head>
 
 <body>
+	<h2 style="text-align: center;">게시판</h2>
 	<form id="listForm" name="listForm" method="post">
 		<input type="hidden" id="mberId" name="mberId" value="${mberId}" />
 		<input type="hidden" id="boardNo" name="boardNo" value="" />
