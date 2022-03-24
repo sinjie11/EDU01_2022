@@ -190,7 +190,7 @@ a:visited {
 	
 	//10,20,30개씩 selectBox 클릭 이벤트
 	function changeSelectBox(currentPage, cntPerPage, pageSize){
-	    var selectValue = $("#cntSelectBox").children("option:selected").val();
+	    var selectValue = $('#cntSelectBox option:selected').val();
 	    movePage(currentPage, selectValue, pageSize);
 	    
 	}
@@ -346,6 +346,7 @@ a:visited {
 </head>
 
 <body>
+	<button type="button" class="loginBtn" style="float:right;margin-right:190px;" id="logoutBtn" onclick="fnLogOut();">로그아웃</button>
 	<h2 style="text-align: center;">게시판</h2>
 	<form id="listForm" name="listForm" method="post">
 		<input type="hidden" id="mberId" name="mberId" value="${mberId}" />

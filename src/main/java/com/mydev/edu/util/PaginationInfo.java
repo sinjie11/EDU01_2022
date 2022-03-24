@@ -2,7 +2,7 @@ package com.mydev.edu.util;
 
 public class PaginationInfo {
     
-	 // 현재페이지
+	// 현재페이지
     private int currentPage;
     // 페이지당 출력할 페이지 갯수
     private int cntPerPage;
