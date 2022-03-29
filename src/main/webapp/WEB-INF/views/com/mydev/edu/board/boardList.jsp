@@ -342,6 +342,15 @@ a:visited {
 		form.attr('action', '/board/boardRegist.do');
 		form.submit();
 	}
+	
+	// 로그아웃
+	function fnLogOut() {
+		
+		var form = $('#listForm');
+
+		form.attr('action', '/logout.do');
+		form.submit();
+	}
 	</script>
 </head>
 

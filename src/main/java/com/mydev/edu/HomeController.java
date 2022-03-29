@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,23 @@ public class HomeController {
 		logger.info("===== Main Login Page Start ===== ");
 		
 		return "main";
+	}
+	
+	/**
+	 * 로그아웃
+	 * @param request
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/logout.do")
+	public String logout(HttpServletRequest request, Model model) {		
+		
+		HttpSession session = request.getSession();
+		
+		// 1: 기존의 세션 데이터를 모두 삭제
+	    session.invalidate();
+		
+		return "redirect:/";
 	}
 	
 	/**
