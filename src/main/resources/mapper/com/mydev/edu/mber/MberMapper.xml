@@ -48,8 +48,12 @@
 			MEMBER
 		WHERE
 			USE_YN = 'Y'
-			AND MBER_ID = #{mberId} 
-			AND MBER_PW = #{mberPw}
+			<if test="mberId != null and mberId != ''">
+				AND MBER_ID = #{mberId} 
+			</if>
+			<if test="mberPw != null and mberPw != ''">
+				AND MBER_PW = #{mberPw} 
+			</if>
 	</select>
 	
 	<!-- 회원ID 중복 체크 -->

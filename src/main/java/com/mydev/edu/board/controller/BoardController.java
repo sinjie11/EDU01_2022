@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.mydev.edu.board.service.BoardService;
 import com.mydev.edu.board.vo.BoardVO;
 import com.mydev.edu.mber.service.MberService;
+import com.mydev.edu.mber.vo.MberVO;
 import com.mydev.edu.util.PaginationInfo;
 
 @Controller
@@ -69,10 +70,18 @@ public class BoardController {
         
 		List<BoardVO> boardList = boardService.selectBoardList(boardVO);
 		
+		// 로그인한 회원 정보 내리기
+		MberVO mberVO = new MberVO();
+		mberVO.setMberId(boardVO.getMberId());
+		
+		mberVO = mberService.selectMberConfirmInfo(mberVO);
+		
 		// 게시판 목록 내리기
 		model.addAttribute("boardList", boardList);
 		// 로그인한 아이디 내리기
 		model.addAttribute("mberId", boardVO.getMberId());
+		// 로그인한 정보 내리기
+		model.addAttribute("mberVO", mberVO);
 		
 		return "/com/mydev/edu/board/boardList";
 	}

@@ -356,6 +356,7 @@ a:visited {
 
 <body>
 	<button type="button" class="loginBtn" style="float:right;margin-right:190px;" id="logoutBtn" onclick="fnLogOut();">로그아웃</button>
+	<span style="float:right;margin-right:10px;">${mberVO.name}</span>
 	<h2 style="text-align: center;">게시판</h2>
 	<form id="listForm" name="listForm" method="post">
 		<input type="hidden" id="mberId" name="mberId" value="${mberId}" />
